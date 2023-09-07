@@ -9,6 +9,7 @@ import org.hibernate.annotations.Parameter;
 import lombok.Data;
 import com.spring.library.model.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -54,5 +55,44 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id",nullable = false)
-    private List<Book> books;
+    private List<Book> books= new ArrayList<>(); ;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+
+        if (id != user.id) return false;
+        if (!email.equals(user.email)) return false;
+        if (!firstName.equals(user.firstName)) return false;
+        if (!lastName.equals(user.lastName)) return false;
+        if (!password.equals(user.password)) return false;
+        if (!role.equals(user.role)) return false;
+        return books.equals(user.books);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + email.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + role.hashCode();
+        result = 31 * result + books.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", books=" + books +
+                '}';
+    }
 }
